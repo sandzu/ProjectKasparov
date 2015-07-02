@@ -1,0 +1,176 @@
+# -*- coding: utf-8 -*-
+"""
+Created on Fri Jun 12 21:10:08 2015
+
+@author: Andzu
+
+general pseudocode:
+
+generate a list of list of lists, or a list of board states. each of these contains
+a possible first move. from here on, use each board state to generate a list of
+boards that contains every possible second move, etc. etc. 
+
+next, convert board representations into actual boards. (see function convertToBoards)
+
+Some thoughts: This is kind of a mess. Any feedback on how to be less ad-hoc would be great.
+"""
+def findValidMove(board):
+    #returns coordinate pairs of every valid move on a specific board
+    moves=[]
+    for i in range(3):
+        for j in range(3):
+            if board[i][j]==0 and [i,j]!=None:
+                
+                moves.append([i,j])
+
+    return moves
+def copyBoard(board):
+    newBoard=[[0,0,0],[0,0,0],[0,0,0]]
+    for i in range(3):
+        for j in range(3):
+            newBoard[i][j]=board[i][j]
+            
+    return newBoard
+
+def makeEveryMove(board,player):
+    x=board
+    newBoards=[]
+    #generates a list of boards, each of which contains a new gamestate after a new move has been made
+    #player is either 1 or 2
+    moves=findValidMove(board)
+    for i in range(len(moves)):
+        
+        newBoard=copyBoard(board)
+        
+        newBoard[moves[i][0]][moves[i][1]]=player
+        newBoards.append(newBoard)
+       
+        
+    return(newBoards)
+    
+def nextMove(previousBoards,player):
+    #generates every possible game state one move after every gamestate in the list previousBoards
+    nextBoards=[]
+    for i in previousBoards:
+        #generate every next move
+        nextMoves=makeEveryMove(i,player)
+        #append every one of these to the list of moves
+        for j in nextMoves:
+            if not checkForWin(board):
+                nextBoards.append(j)
+            
+    return nextBoards
+    
+def checkForWin(board):
+    #rows and cols
+    for i in range(3):
+        if board[0][i]==board[1][i] and board[1][i]==board[2][i]:
+            return true
+        if board[i][0]==board[i][1] and board[i][1]==board[i][2]:
+            return true
+    #diagonals
+    if board[0][0]==board[1][1] and board[1][1]==board[2][2]:
+            return true
+    if board[0][2]==board[1][1] and board[1][1]==board[2][0]:
+            return true
+    #no winner detected
+    return false
+    
+def convertToBoard(board):
+    #converts a board representation (a list of lists) into an actual board object
+    newBoard=gameBoard() '''not sure if this is the proper syntax'''
+    for i in range(3):
+        for j in range(3):
+            newBoard.makemove(board[i][j],i,j)
+    return newBoard
+    
+
+def generateAllPossibleBoardPos():
+    emptyBoard=[[0,0,0],[0,0,0],[0,0,0]]
+    alist=[]
+    
+    
+    xFirst=makeEveryMove(emptyBoard,1)
+    oFirst=makeEveryMove(emptyBoard,2)
+    
+    xSecond=nextMove(oFirst,1)
+    oSecond=nextMove(xFirst,2)
+    
+    xThird=nextMove(oSecond,1)
+    oThird=nextMove(xSecond,2)
+    
+    xFourth=nextMove(oThird,1)
+    oFourth=nextMove(xThird,2)
+    
+    xFith=nextMove(oFourth,1)
+    oFith=nextMove(xFourth,2)
+    
+    xSixth=nextMove(oFith,1)
+    oSixth=nextMove(xFiht,2)
+    
+    xSeventh=nextMove(oSixth,1)
+    oSeventh=nextMove(xSixth,2)
+    
+    xEigth=nextMove(oSeventh,1)
+    oEight=nextMove(xSeventh,2)
+    
+    xNinth=nextMove(oEight,1)
+    oNinth=nextMove(xEight,2)
+    
+    masterList=[] #will contain list of all possible board states
+    for all i in xFirst:
+        masterList.append(convertToBoard(i))
+    for all i in oFirst:
+        masterList.append(convertToBoard(i))
+    
+    for all i in xSecond:
+        masterList.append(convertToBoard(i))
+    for all i in oSecond:
+        masterList.append(convertToBoard(i))
+        
+    for all i in xThird:
+        masterList.append(convertToBoard(i))
+    for all i in oThird:
+        masterList.append(convertToBoard(i))
+        
+    for all i in xFourth:
+        masterList.append(convertToBoard(i))
+    for all i in oFourth:
+        masterList.append(convertToBoard(i))
+        
+    for all i in xFith:
+        masterList.append(convertToBoard(i))
+    for all i in ofith:
+        masterList.append(convertToBoard(i))
+        
+    for all i in xFith:
+        masterList.append(convertToBoard(i))
+    for all i in oFith:
+        masterList.append(convertToBoard(i))
+    
+        
+    for all i in xSixth:
+        masterList.append(convertToBoard(i))
+    for all i in oSixth:
+        masterList.append(convertToBoard(i))
+        
+    for all i in xSeventh:
+        masterList.append(convertToBoard(i))
+    for all i in oSeventh:
+        masterList.append(convertToBoard(i))
+        
+    for all i in xEigth:
+        masterList.append(convertToBoard(i))
+    for all i in oEight:
+        masterList.append(convertToBoard(i))
+        
+            
+    for all i in xNinth:
+        masterList.append(convertToBoard(i))
+    for all i in oNinth:
+        masterList.append(convertToBoard(i))
+        
+    return masterList
+        
+        
+generateAllPossibleBoardPos()
